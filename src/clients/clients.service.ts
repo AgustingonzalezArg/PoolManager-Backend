@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Client } from './entities/client.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class ClientsService {
-  create(createClientDto: CreateClientDto) {
-    return 'This action adds a new client';
+  constructor( 
+    @InjectRepository(Client)
+    private clientRepository: Repository<Client>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>
+  ) {}
+
+  async create(idUser: number, createClientDto: CreateClientDto) {
+    try {
+      const user = await this.userRepository.findOne({where: {id: idUser}})
+      if(!user) {
+        throw new NotFoundException("This user not found");
+      }
+
+      const newClient = await this.clientRepository.create({...createClientDto, user});
+      return await this.clientRepository.save(newClient)
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
   }
 
-  findAll() {
-    return `This action returns all clients`;
+  async findAll(idUser: number): Promise<Client[] | string> {
+      try {
+        const clients = await this.clientRepository.find({
+          where: {user: {id: idUser}}
+        });
+        if(clients.length <= 0) {
+          return "not found clients"
+        }
+        return clients
+      } catch (error) {
+        console.log(error.message)
+        throw error
+      }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} client`;
+  async update(id: number, updateClientDto: UpdateClientDto): Promise<Client> {
+    try {
+      const client = await this.clientRepository.findOne({where: {id}})
+      if(!client) {
+        throw new NotFoundException(`Client with ID ${id} not found`);
+      }
+      Object.assign(client, updateClientDto)
+      return await this.clientRepository.save(client)
+    } catch (error) {
+      console.log(error.message)
+      throw error
+    }
   }
 
-  update(id: number, updateClientDto: UpdateClientDto) {
-    return `This action updates a #${id} client`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} client`;
+  async remove(id: number): Promise<string> {
+    try {
+      const clientDeleted = await  this.clientRepository.delete({id})
+      if(clientDeleted.affected <= 0 ) {
+        throw new InternalServerErrorException("This client could not be deleted successfully. Try again later")
+      }
+      return `client with id ${id} deleted`
+    } catch (error) {
+      console.log(error.message)
+      throw error
+    }
   }
 }
