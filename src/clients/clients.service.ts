@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Client } from './entities/client.entity';
 import { User } from 'src/users/entities/user.entity';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class ClientsService {
@@ -66,6 +67,30 @@ export class ClientsService {
         throw new InternalServerErrorException("This client could not be deleted successfully. Try again later")
       }
       return `client with id ${id} deleted`
+    } catch (error) {
+      console.log(error.message)
+      throw error
+    }
+  }
+
+  @Cron('0 00 00 * * *')
+  async updateCleansPools() {
+    try {
+      const listToday = await this.clientRepository.find({
+        where: {CleanToday: true}
+      })
+      const listTomorrow = await this.clientRepository.find({
+        where: {CleanTomorrow : true}
+      })
+      listToday.forEach(client => client.CleanToday = false)
+      listTomorrow.forEach(client => {
+        client.CleanTomorrow = false
+        client.CleanToday = true
+      })
+      const saveListToday = await this.clientRepository.save(listToday)
+      const saveListTomorrow = await this.clientRepository.save(listTomorrow)
+      console.log("Lists updated")
+      return {saveListToday, saveListTomorrow}
     } catch (error) {
       console.log(error.message)
       throw error

@@ -13,13 +13,13 @@ export class Payment {
     @ManyToOne(() => Client, client => client.payments)
     client: Client;
     
-    @Column()
-    date: string;
+    @Column({nullable: false})
+    date: Date;
 
-    @Column()
+    @Column({nullable: false})
     price: number;
 
-    @Column()
+    @Column({nullable: false})
     payment: boolean;
 
 

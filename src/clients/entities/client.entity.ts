@@ -7,23 +7,29 @@ export class Client {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, user => user.clients)
+    @ManyToOne(() => User, user => user.clients, {nullable: false})
     user: User;
 
-    @OneToMany(() => Payment, payment => payment.client)
+    @OneToMany(() => Payment, payment => payment.client, {nullable: false})
     payments: Payment[]; 
 
-    @Column()
+    @Column({nullable: false})
     name: string;
     
-    @Column()
+    @Column({nullable: false})
     neighborhood: string;
     
-    @Column()
+    @Column({nullable: false})
     price: number;
     
-    @Column()
+    @Column({nullable: false})
     periodicity: number;
+
+    @Column({nullable: false, default: false})
+    CleanToday: boolean
+
+    @Column({nullable: false, default: false})
+    CleanTomorrow: boolean
 
     @Column()
     phoneNumber: string;

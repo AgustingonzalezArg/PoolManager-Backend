@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import { UsersModule } from './users/users.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ClientsModule } from './clients/clients.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [TypeOrmModule.forRootAsync({
@@ -15,8 +16,9 @@ import { ClientsModule } from './clients/clients.module';
       password: "1234",
       database: "Pool-Manager",
       autoLoadEntities: true,
+      logging: true
     })
-  }), UsersModule, PaymentsModule, ClientsModule]
+  }), ScheduleModule.forRoot(), UsersModule, PaymentsModule, ClientsModule]
 })
 export class AppModule {
   constructor( private dataSource: DataSource) {}

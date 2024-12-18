@@ -8,18 +8,18 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({unique: true})
+    @Column({unique: true, nullable: false})
     username: string;
 
-    @Column({unique: true})
+    @Column({unique: true, nullable: false})
     email: string;
 
-    @Column()
+    @Column({nullable: false})
     hash: string;
     
-    @OneToMany(() => Client, clients => clients.user)
+    @OneToMany(() => Client, clients => clients.user, {nullable: false})
     clients: Client[]
 
-    @OneToMany(() => Payment, payment => payment.user)
+    @OneToMany(() => Payment, payment => payment.user, {nullable: false})
     payments: Payment[]
 }
