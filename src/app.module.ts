@@ -16,7 +16,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       password: "1234",
       database: "Pool-Manager",
       autoLoadEntities: true,
-      logging: true
+      logging: true,
     })
   }), ScheduleModule.forRoot(), UsersModule, PaymentsModule, ClientsModule]
 })

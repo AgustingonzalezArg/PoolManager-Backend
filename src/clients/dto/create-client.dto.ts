@@ -14,7 +14,7 @@ export class CreateClientDto {
     @IsNotEmpty()
     price;
 
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
     periodicity;
 

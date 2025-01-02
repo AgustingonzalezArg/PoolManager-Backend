@@ -23,7 +23,7 @@ export class Client {
     price: number;
     
     @Column({nullable: false})
-    periodicity: number;
+    periodicity: "weekly"| "biweekly" | "monthly";
 
     @Column({nullable: false, default: false})
     CleanToday: boolean
