@@ -16,6 +16,9 @@ export class CreatePaymentDto {
     @IsNotEmpty()
     payment: boolean;
 
+    @IsBoolean()
+    cleaning: boolean;
+
     @IsNumber()
     @IsNotEmpty()
     idClient: number;

@@ -10,10 +10,10 @@ export class Payment {
     @ManyToOne(() => User, user => user.payments)
     user: User;
 
-    @ManyToOne(() => Client, client => client.payments)
+    @ManyToOne(() => Client, client => client.payments, {onDelete: "CASCADE"})
     client: Client;
     
-    @Column({nullable: false})
+    @Column({type: "timestamp", nullable: false})
     date: Date;
 
     @Column({nullable: false})
@@ -22,5 +22,6 @@ export class Payment {
     @Column({nullable: false})
     payment: boolean;
 
-
+    @Column({nullable:false, default: false})
+    cleaning: boolean
 }

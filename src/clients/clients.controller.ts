@@ -18,32 +18,32 @@ export class ClientsController {
     return this.clientsService.findAll(+id);
   }
 
-  @Get('cleantoday/:id')
-  findCleanToday(@Param('id') id: string) {
-    return this.clientsService.findCleanToday(+id);
-  }
+  // @Get('cleantoday/:id')
+  // findCleanToday(@Param('id') id: string) {
+  //   return this.clientsService.findCleanToday(+id);
+  // }
 
-  @Get('poolstoday/:id')
-  poolsToday(@Param('id') id: string) {
-    return this.clientsService.poolsToday(+id);
-  }
+  // @Get('poolstoday/:id')
+  // poolsToday(@Param('id') id: string) {
+  //   return this.clientsService.poolsToday(+id);
+  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
     return this.clientsService.update(+id, updateClientDto);
   }
 
-  @Patch('cleantoday/:id')
-  updateCleanToday(@Param('id') id: string, @Body() arrayIds: Key[]) {
-    console.log(arrayIds)
-    return this.clientsService.updateCleanToday(+id, arrayIds);
-  }
+  // @Patch('cleantoday/:id')
+  // updateCleanToday(@Param('id') id: string, @Body() arrayIds: Key[]) {
+  //   console.log(arrayIds)
+  //   return this.clientsService.updateCleanToday(+id, arrayIds);
+  // }
 
-  @Patch('cleantomorrow/:id')
-  updateCleanTomorrow(@Param('id') id: string, @Body() arrayIds: Key[]) {
-    console.log(arrayIds)
-    return this.clientsService.updateCleanTomorrow(+id, arrayIds);
-  }
+  // @Patch('cleantomorrow/:id')
+  // updateCleanTomorrow(@Param('id') id: string, @Body() arrayIds: Key[]) {
+  //   console.log(arrayIds)
+  //   return this.clientsService.updateCleanTomorrow(+id, arrayIds);
+  // }
 
   @Delete(':idUser/:id')
   remove(

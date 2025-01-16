@@ -10,7 +10,7 @@ export class Client {
     @ManyToOne(() => User, user => user.clients, {nullable: false})
     user: User;
 
-    @OneToMany(() => Payment, payment => payment.client, {nullable: false})
+    @OneToMany(() => Payment, payment => payment.client, {nullable: false, cascade: true})
     payments: Payment[]; 
 
     @Column({nullable: false})
@@ -25,12 +25,6 @@ export class Client {
     @Column({nullable: false})
     periodicity: "weekly"| "biweekly" | "monthly";
 
-    @Column({nullable: false, default: false})
-    CleanToday: boolean
-
-    @Column({nullable: false, default: false})
-    CleanTomorrow: boolean
-
-    @Column()
+    @Column({nullable: true})
     phoneNumber: string;
 }
